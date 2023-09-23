@@ -38,15 +38,37 @@
             border: 0 !important;
             background-color: lightblue;
         }
+
+        .joke-wrapper {
+            width: 200px;
+            display: flex;
+            height: 240px;
+            margin: 20px auto;
+            border-radius: 8px;
+            align-items: center;
+            justify-content: center;
+            background-color: darkseagreen;
+        }
+
+        .joke-category {
+
+        }
+
     </style>
     <script src="ListOfCategories.js"></script>
 </head>
 <body>
 <div class="container">
     <iframe src="../Layout/Header.html" class="header-wrapper"></iframe>
-    <div class="body-Container">
-        <script src="ListOfCategories.js"></script>
+    <div class="body-Container"></div>
+    <div class="joke-wrapper">
+        <div>
+            <span class="joke-category"></span>
+            <span class="joke-content">...loading</span>
+            <span class="joke-creationTime"></span>
+        </div>
     </div>
+
     <iframe src="../Layout/Footer.html" class="footer-wrapper"></iframe>
 </div>
 </body>
