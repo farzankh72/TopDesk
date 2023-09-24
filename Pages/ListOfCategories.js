@@ -1,4 +1,4 @@
-const ListOfCategories = async () => {
+(function ListOfCategories() {
     const URL_JOKE_CAT = 'https://api.chucknorris.io/jokes/categories';
     fetch(URL_JOKE_CAT, {
         method: 'GET',
@@ -35,9 +35,7 @@ const ListOfCategories = async () => {
         .catch((error) => {
             console.error('Error fetching data:', error);
         });
-}
-
-ListOfCategories()
+})()
 
 const Joke = (category) => {
     const URL_JOKE = `https://api.chucknorris.io/jokes/random?category=${category}`;
@@ -58,7 +56,8 @@ const Joke = (category) => {
             return res.json()
         }).then((joke) => {
             content.textContent = joke.value
-            createdAt.textContent = joke.created_at
+            const dateTime = new Date(joke.created_at)
+            createdAt.textContent = dateTime.toLocaleString()
             if (joke.categories.length > 1) {
                 joke.categories.map((category) => {
                     jokeCat.textContent = jokeCat.textContent + category + '/'
