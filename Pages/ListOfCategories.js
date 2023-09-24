@@ -10,36 +10,27 @@ const ListOfCategories = async () => {
             return resp.json();
         })
         .then((CategoriesData) => {
+            const ListOfCatWrapper = document.querySelector('.joke-category-wrapper')
+            ListOfCatWrapper.textContent = '...Loading'
 
             RandomJoke()
+            ListOfCatWrapper.textContent = ''
+            if (CategoriesData.length > 1) {
+                CategoriesData.forEach((item) => {
+                    const listOfCategory = document.createElement('li');
 
-            const container = document.querySelector('.body-Container');
+                    listOfCategory.style.cursor = 'pointer'
+                    listOfCategory.style.display = 'inline-block';
 
+                    listOfCategory.textContent = item + ' / ';
+                    ListOfCatWrapper.appendChild(listOfCategory);
+                    listOfCategory.addEventListener('click', () => {
+                        Joke(item)
+                    })
+                });
+            } else {
 
-            const ListOfCatWrapper = document.createElement('ul')
-
-            ListOfCatWrapper.style.width = '80%';
-            ListOfCatWrapper.style.display = 'flex';
-            ListOfCatWrapper.style.fontSize = '32px';
-            ListOfCatWrapper.style.overflow = 'scroll';
-            ListOfCatWrapper.style.overflowY = 'hidden';
-            ListOfCatWrapper.style.whiteSpace = 'nowrap';
-            ListOfCatWrapper.style.justifyContent = 'center';
-            ListOfCatWrapper.style.margin = '0 auto';
-
-            CategoriesData.forEach((item) => {
-                const listOfCategory = document.createElement('li');
-                listOfCategory.style.display = 'inline-block';
-                listOfCategory.style.backgroundColor = 'lightBlue'
-                listOfCategory.style.cursor = 'pointer'
-
-                listOfCategory.textContent = item + ' / ';
-                ListOfCatWrapper.appendChild(listOfCategory);
-                listOfCategory.addEventListener('click', () => {
-                    Joke(item)
-                })
-            });
-            container.appendChild(ListOfCatWrapper)
+            }
         })
         .catch((error) => {
             console.error('Error fetching data:', error);
@@ -52,11 +43,10 @@ const Joke = (category) => {
     const URL_JOKE = `https://api.chucknorris.io/jokes/random?category=${category}`;
 
     const content = document.querySelector('.joke-content')
-    content.textContent = 'loading'
+    content.textContent = '...loading'
     const createdAt = document.querySelector('.joke-creationTime')
-    createdAt.textContent = 'loading'
     const jokeCat = document.querySelector('.joke-category')
-    jokeCat.textContent = 'loading'
+    jokeCat.textContent = '...loading'
 
     if (category) {
         fetch(URL_JOKE, {
@@ -69,9 +59,13 @@ const Joke = (category) => {
         }).then((joke) => {
             content.textContent = joke.value
             createdAt.textContent = joke.created_at
-            joke.categories.map((category) => {
-                jokeCat.textContent = jokeCat.textContent + category + '/'
-            })
+            if (joke.categories.length > 1) {
+                joke.categories.map((category) => {
+                    jokeCat.textContent = jokeCat.textContent + category + '/'
+                })
+            } else {
+                jokeCat.textContent = category
+            }
         }).catch((err) => {
             console.log(err)
         })
