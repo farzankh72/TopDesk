@@ -1,5 +1,6 @@
-(function ListOfCategories() {
+(function CategoriesList() {
     const URL_JOKE_CAT = 'https://api.chucknorris.io/jokes/categories';
+
     fetch(URL_JOKE_CAT, {
         method: 'GET',
         headers: {
@@ -14,15 +15,20 @@
             ListOfCatWrapper.textContent = '...Loading'
 
             RandomJoke()
+
             ListOfCatWrapper.textContent = ''
+
             if (CategoriesData.length > 1) {
-                CategoriesData.forEach((item) => {
+                CategoriesData.forEach((item, index) => {
                     const listOfCategory = document.createElement('li');
 
-                    listOfCategory.style.cursor = 'pointer'
-                    listOfCategory.style.display = 'inline-block';
+                    listOfCategory.className = 'category-item'
 
-                    listOfCategory.textContent = item + ' / ';
+                    if (CategoriesData.length === index + 1) {
+                        listOfCategory.textContent = item;
+                    } else {
+                        listOfCategory.textContent = item + ' | ';
+                    }
                     ListOfCatWrapper.appendChild(listOfCategory);
                     listOfCategory.addEventListener('click', () => {
                         Joke(item)
@@ -42,9 +48,11 @@ const Joke = (category) => {
 
     const content = document.querySelector('.joke-content')
     content.textContent = '...loading'
-    const createdAt = document.querySelector('.joke-creationTime')
+
     const jokeCat = document.querySelector('.joke-category')
     jokeCat.textContent = '...loading'
+
+    const createdAt = document.querySelector('.joke-creationTime')
 
     if (category) {
         fetch(URL_JOKE, {
@@ -65,8 +73,8 @@ const Joke = (category) => {
             } else {
                 jokeCat.textContent = category
             }
-        }).catch((err) => {
-            console.log(err)
+        }).catch((error) => {
+            console.error('Error fetching data:', error);
         })
     }
 }
@@ -84,7 +92,7 @@ const RandomJoke = () => {
         return resp.json()
     }).then((joke) => {
         content.textContent = joke.value
-    }).catch((err) => {
-        console.log(err)
+    }).catch((error) => {
+        console.error('Error fetching data:', error);
     })
 }

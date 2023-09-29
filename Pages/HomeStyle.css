@@ -19,7 +19,6 @@ body {
 
 
 .joke-category-wrapper {
-    width: 100%;
     display: flex;
     margin: 0 auto;
     font-size: 14px;
@@ -29,10 +28,18 @@ body {
     white-space: nowrap;
 }
 
-.category-wrapper {
+.category-container {
     height: 80%;
     width: 100%;
+    display: flex;
+    justify-content: center;
     background-color: antiquewhite;
+}
+
+.category-wrapper {
+    width: 90%;
+    display: flex;
+    justify-content: center;
 }
 
 .footer-wrapper {
@@ -79,4 +86,15 @@ body {
     bottom: 0;
     margin: 8px;
     position: absolute;
+}
+
+.category-item {
+    cursor: pointer;
+    display: inline-block;
+    transition: font-size 300ms ease, color 300ms ease;
+}
+
+.category-item:hover {
+    font-size: 16px;
+    color: darkseagreen;
 }
