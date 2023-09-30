@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="JokeService.js"></script>
+    <title>LaughHub</title>
     <link rel="stylesheet" href="HomeStyle.css">
 </head>
 <body>
 <div class="container">
     <iframe src="../Layout/Header.html" class="header-wrapper"></iframe>
+
     <div class="category-container">
         <div class="category-wrapper">
-            <ol class="joke-category-wrapper">
+            <ol class="category-list-wrapper">
                 <li>...loading</li>
             </ol>
         </div>
@@ -23,8 +23,20 @@
             <span class="joke-creationTime"></span>
         </div>
     </div>
+    <div class="share-container">
+        <div class="share-wrapper">
+            <img
+                    width="32px"
+                    height="32px"
+                    id="share-img"
+                    class="share-img"
+                    alt="copy-content"
+                    src="https://cdn-icons-png.flaticon.com/512/2921/2921716.png">
+        </div>
+    </div>
 
     <iframe src="../Layout/Footer.html" class="footer-wrapper"></iframe>
+    <script src="JokeService.js"></script>
 </div>
 </body>
 </html>

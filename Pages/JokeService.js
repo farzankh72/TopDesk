@@ -1,7 +1,7 @@
 (function CategoriesList() {
-    const URL_JOKE_CAT = 'https://api.chucknorris.io/jokes/categories';
+    const URL_CATEGORY = 'https://api.chucknorris.io/jokes/categories';
 
-    fetch(URL_JOKE_CAT, {
+    fetch(URL_CATEGORY, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -10,32 +10,25 @@
         .then((resp) => {
             return resp.json();
         })
-        .then((CategoriesData) => {
-            const ListOfCatWrapper = document.querySelector('.joke-category-wrapper')
-            ListOfCatWrapper.textContent = '...Loading'
+        .then((categories) => {
+            const categoryWrapper = document.querySelector('.category-list-wrapper')
+            categoryWrapper.textContent = '...Loading'
 
-            RandomJoke()
+            if (categories.length > 1) {
+                categories.forEach((item, index) => {
+                    const categoriesItem = document.createElement('li');
+                    categoriesItem.className = 'category-item'
 
-            ListOfCatWrapper.textContent = ''
-
-            if (CategoriesData.length > 1) {
-                CategoriesData.forEach((item, index) => {
-                    const listOfCategory = document.createElement('li');
-
-                    listOfCategory.className = 'category-item'
-
-                    if (CategoriesData.length === index + 1) {
-                        listOfCategory.textContent = item;
+                    if (categories.length === index + 1) {
+                        categoriesItem.textContent = item;
                     } else {
-                        listOfCategory.textContent = item + ' | ';
+                        categoriesItem.textContent = item + ' | ';
                     }
-                    ListOfCatWrapper.appendChild(listOfCategory);
-                    listOfCategory.addEventListener('click', () => {
+                    categoryWrapper.appendChild(categoriesItem);
+                    categoriesItem.addEventListener('click', () => {
                         Joke(item)
                     })
                 });
-            } else {
-
             }
         })
         .catch((error) => {
@@ -45,6 +38,8 @@
 
 const Joke = (category) => {
     const URL_JOKE = `https://api.chucknorris.io/jokes/random?category=${category}`;
+
+    const shareButton = document.getElementById('share-img');
 
     const content = document.querySelector('.joke-content')
     content.textContent = '...loading'
@@ -60,7 +55,6 @@ const Joke = (category) => {
                 'Content-Type': 'application/json',
             }
         }).then((res) => {
-            jokeCat.textContent = ''
             return res.json()
         }).then((joke) => {
             content.textContent = joke.value
@@ -73,14 +67,21 @@ const Joke = (category) => {
             } else {
                 jokeCat.textContent = category
             }
+
+            shareButton.addEventListener('click', () => {
+                navigator.clipboard.writeText(joke.value).then()
+                alert('Joke copied to your clipboard!')
+            })
         }).catch((error) => {
             console.error('Error fetching data:', error);
         })
     }
 }
 
-const RandomJoke = () => {
+(function RandomJoke() {
     const URL_RANDOM_JOKE = 'https://api.chucknorris.io/jokes/random'
+
+    const shareButton = document.getElementById('share-img');
 
     const content = document.querySelector('.joke-content')
 
@@ -92,7 +93,11 @@ const RandomJoke = () => {
         return resp.json()
     }).then((joke) => {
         content.textContent = joke.value
+        shareButton.addEventListener('click', () => {
+            navigator.clipboard.writeText(joke.value).then()
+            alert('Joke copied to your clipboard!')
+        })
     }).catch((error) => {
         console.error('Error fetching data:', error);
     })
-}
+})()
