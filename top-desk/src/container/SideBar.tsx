@@ -12,8 +12,8 @@ import {Box} from "@mui/material";
 const SideBar = () => {
     const {selectedGeoCountry} = useGeoContext()
     return (
-        <Container maxWidth={'xl'} sx={{borderRadius: '6px'}}>
-            <Container sx={{backgroundColor: '#F5F5F5'}}>
+        <Container maxWidth={'xl'}>
+            <Container sx={{backgroundColor: '#F5F5F5', borderRadius: '6px'}}>
                 <Typography variant={'h6'} fontWeight={'bolder'}>Chosen Item</Typography>
                 <List>
                     {
@@ -23,8 +23,8 @@ const SideBar = () => {
                                     <ListItemIcon>
                                         {item.main.sea_level}
                                     </ListItemIcon>
-                                    <ListItemText primary={<Typography
-                                        variant={'subtitle2'}>{item.name} | {item.weather[0].description.includes('rain') ? 'Rainy' : 'no-rainy'} </Typography>}/>
+                                    <ListItemText
+                                        primary={`${item.name} | ${item.weather[0].description.includes('rain') ? 'Rainy' : 'no-rainy'}`}/>
                                 </ListItemButton>
                             </ListItem>
                         )
@@ -32,12 +32,28 @@ const SideBar = () => {
                 </List>
 
                 <Box bgcolor='#0073e6' borderRadius='6px' p={1} color='#F5F5F5'>
-                    <Typography variant={'h6'} fontWeight={'bolder'}>The formal is:</Typography>
+                    <Typography variant={'subtitle1'} fontWeight={'bolder'}>The formal is:</Typography>
                     <Box>
-                        <Typography variant={'caption'}>
-                            (2 * Distance country from sea ) / (9.8 + wind speed - rain )
+                        <Typography variant={'subtitle2'} fontWeight={"bolder"}>
+                            (2 * EASL ) / (9.8 + WS - RIC )
 
                         </Typography>
+                        <List disablePadding>
+                            <ListItem>
+                                <ListItemText disableTypography sx={{fontSize: '12px'}}
+                                              primary={'*EASL : Elevation Above Sea Level'}/>
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText disableTypography sx={{fontSize: '12px'}} primary={'*WS : Wind Speed'}/>
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText disableTypography sx={{fontSize: '12px'}} primary={'*Pi = 9.8'}/>
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText disableTypography sx={{fontSize: '12px'}}
+                                              primary={'*RIC : Rainfall Impact Coefficient = 0.5'}/>
+                            </ListItem>
+                        </List>
                     </Box>
                 </Box>
             </Container>

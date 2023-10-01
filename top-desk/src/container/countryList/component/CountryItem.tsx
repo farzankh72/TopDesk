@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import {useGeoContext} from "@/pages";
+import {ButtonBase} from "@mui/material";
 
 interface countryItemProps {
     fetchCountry: () => void
@@ -22,14 +23,14 @@ interface countryItemProps {
 let userSelected: Array<WeatherModel> = []
 
 const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps }) => {
-    const {addToSelectedGeo , clearData} = useGeoContext()
+    const {addToSelectedGeo, clearData} = useGeoContext()
     const [fallTime, setFallTime] = useState<number>(0)
-    const [hintDialog, setHintDialog] = useState<boolean>(false)
+    const [resultDialogDisplay, setResultDialogDisplay] = useState<boolean>(false)
     const [noneDistanceSnack, setNoneDistanceSnack] = useState<boolean>(false)
 
     const [addedItem, setAddedItem] = useState<boolean>(false)
 
-    const {data, loading, error, fetching} = useGetCurrentWeather({enable: false})
+    const {data, loading, fetching} = useGetCurrentWeather({enable: false})
 
     useEffect(() => {
         if (data?.main && data.main.sea_level != undefined) {
@@ -43,7 +44,7 @@ const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps })
 
         if (userSelected.length === 3) {
             setFallTime(CalculateDistance(userSelected))
-            setHintDialog(true)
+            setResultDialogDisplay(true)
         }
     }, [data])
 
@@ -54,34 +55,38 @@ const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps })
 
     const handleCloseDialog = () => {
         userSelected = []
-        setHintDialog(false)
+        setResultDialogDisplay(false)
         countryItemProps.fetchCountry()
-        clearData(true)
+        if (clearData) {
+            clearData(true)
+        }
     }
 
     return (
-        <Card sx={{width: '210px', height: '240px', filter: addedItem ? 'grayscale(100%)' : 'none'}}>
-            <CardMedia sx={{height: '90px'}} component='img' image={countryItemProps.countryItem.flags.png}/>
-            <CardContent sx={{height: '65px'}}>
-                <Typography variant='subtitle2' fontWeight='bolder'>
-                    Country: {countryItemProps.countryItem.name.common}
-                </Typography>
-                <Typography variant={'caption'} fontWeight='bold'>
-                    Capital City: {countryItemProps.countryItem.capital}
-                </Typography>
-            </CardContent>
-            <CardActions>
-                <Button disabled={loading || error || addedItem} size='small' variant={'contained'}
-                        onClick={() => onClickAddToCountry(countryItemProps.countryItem.latlng)}>
-                    {loading ? '...loading' : error ? 'error...' : noneDistanceSnack ? 'none-dis' : 'Add'}
-                </Button>
-            </CardActions>
-            <ResultDialog
-                fallTime={fallTime}
-                hintDialog={hintDialog}
-                onCloseDialog={handleCloseDialog}
-            />
-        </Card>
+        <ButtonBase disabled={resultDialogDisplay || loading}
+                    onClick={() => onClickAddToCountry(countryItemProps.countryItem.latlng)}>
+            <Card sx={{
+                width: '210px',
+                height: '190px',
+                filter: addedItem ? 'grayscale(100%)' : 'none',
+                opacity: !noneDistanceSnack ? '100%' : '30%'
+            }}>
+                <CardMedia sx={{height: '90px'}} component='img' image={countryItemProps.countryItem.flags.png}/>
+                <CardContent sx={{height: '65px'}}>
+                    <Typography variant='subtitle2' fontWeight='bolder'>
+                        Country: {countryItemProps.countryItem.name.common}
+                    </Typography>
+                    <Typography variant={'caption'} fontWeight='bold'>
+                        Capital City: {countryItemProps.countryItem.capital}
+                    </Typography>
+                </CardContent>
+                <ResultDialog
+                    fallTime={fallTime}
+                    onCloseDialog={handleCloseDialog}
+                    resultDialogDisplay={resultDialogDisplay}
+                />
+            </Card>
+        </ButtonBase>
     )
 }
 

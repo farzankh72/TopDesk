@@ -14,11 +14,11 @@ import useGetRandomJoke from "@/pages/api/hooks/useGetRandomJoke";
 
 interface DialogProps {
     fallTime: number
-    hintDialog: boolean
+    resultDialogDisplay: boolean
     onCloseDialog: () => void
 }
 
-const ResultDialog = ({hintDialog, fallTime, onCloseDialog}: DialogProps) => {
+const ResultDialog = ({resultDialogDisplay, fallTime, onCloseDialog}: DialogProps) => {
     const [hasReward, setHasReward] = useState<boolean>(false)
 
     useEffect(() => {
@@ -43,9 +43,9 @@ const ResultDialog = ({hintDialog, fallTime, onCloseDialog}: DialogProps) => {
         fetchData().then()
     }
 
-    if (hintDialog) {
+    if (resultDialogDisplay) {
         return (
-            <Dialog open={hintDialog} maxWidth={'xs'}>
+            <Dialog open={resultDialogDisplay} maxWidth={'xs'}>
                 <DialogTitle>
                     <Typography variant={'h6'} fontWeight={"bolder"}>
                         Result
@@ -53,21 +53,23 @@ const ResultDialog = ({hintDialog, fallTime, onCloseDialog}: DialogProps) => {
                 </DialogTitle>
                 <DialogContent>
                     <Stack spacing={2}>
-                        <Box bgcolor={'#0073e6'} borderRadius='6px'>
-                            {RandomHint()}
-                        </Box>
-                        <Stack direction={"row"} alignItems={"end"}>
+                        <Stack alignItems={"center"}>
+                            <Stack direction={"row"} alignItems={"end"}>
+                                <Typography variant={'h1'} fontWeight={"bolder"}>
+                                    {fallTime}
+                                </Typography>
+                                <Typography variant={'h4'}>
+                                    s
+                                </Typography>
+                            </Stack>
                             <Typography variant={'body2'}>
-                                The time you hitting the ground is :
-                            </Typography>
-                            <Typography variant={'h4'} fontWeight={"bolder"}>
-                                {fallTime}
-                            </Typography>
-                            <Typography variant={'body2'}>
-                                s
+                                The time you hitting the ground is
                             </Typography>
                         </Stack>
-                        <Box bgcolor={'#0073e6'} borderRadius='6px' p={2} display={hasReward ? 'inherit' : 'none'}>
+                        <Box bgcolor={'#073563'} borderRadius='6px'>
+                            {RandomHint()}
+                        </Box>
+                        <Box bgcolor={'#0073e6'} borderRadius='6px' display={hasReward ? 'inherit' : 'none'}>
                             <Stack direction={"row"}>
                                 <Typography variant={'body2'} fontWeight={"bolder"} color={'#F5F5F5'}>
                                     <Typography variant={'h6'} fontWeight={'bolder'}>Reward is Joke :</Typography>
@@ -78,7 +80,7 @@ const ResultDialog = ({hintDialog, fallTime, onCloseDialog}: DialogProps) => {
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-                    <Stack direction={'row'} justifyContent={"space-between"} width='100%'>
+                    <Stack direction={'row'} spacing={2}>
                         <Button
                             size={"small"}
                             color={'secondary'}
