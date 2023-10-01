@@ -1,13 +1,13 @@
 import {Container, Typography} from "@mui/material";
 
-const Header = ()=>{
-    return(
+const Header = () => {
+    return (
         <Container maxWidth={"md"} sx={{backgroundColor: 'blue', pt: '16px', pb: '16px', borderRadius: '6px'}}>
-            <Typography>
-                بازی کن تا دیرتر به کف زمین بخوری
+            <Typography variant={'h3'} fontWeight={'bolder'}>
+                Be like a yo-yo,
             </Typography>
-            <Typography>
-                فقط، همه چیو در نظر بگیر
+            <Typography variant={"h6"} fontWeight={"bold"}>
+                Aim to reach your lowest point fashionably late!
             </Typography>
         </Container>
     )

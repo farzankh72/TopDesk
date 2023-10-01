@@ -1,5 +1,5 @@
-import Header from "@/component/Header";
-import CountryList from "@/component/CountryList";
+import Header from "@/container/Header";
+import CountryList from "@/container/countryList/CountryList";
 
 import {Stack} from "@mui/material";
 
