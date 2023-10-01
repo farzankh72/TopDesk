@@ -11,7 +11,6 @@ const RandomHint = () => {
 
     return (
         <>
-
             <Typography variant={'body2'} fontWeight={"bolder"} p={2} color={'#F5F5F5'}>
                 <Typography variant={'h6'} fontWeight={'bolder'}>Hint is :</Typography>
                 {hintData[randomIndex]}
