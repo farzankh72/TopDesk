@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
+import {Box} from "@mui/material";
 
 interface DialogProps {
     fallTime: number
@@ -34,20 +35,30 @@ const ResultDialog = ({hintDialog, fallTime, onCloseDialog}: DialogProps) => {
         return (
             <Dialog open={hintDialog} maxWidth={'xs'}>
                 <DialogTitle>
-                    <Typography>
-                        Hint
+                    <Typography variant={'h6'} fontWeight={"bolder"}>
+                        Result
                     </Typography>
                 </DialogTitle>
                 <DialogContent>
                     <Stack spacing={2}>
-                        {RandomHint()}
-                        <Typography variant={'body2'}>
-                            The time you hitting the ground is : {fallTime}
-                        </Typography>
+                        <Box bgcolor={'#0073e6'} borderRadius='6px'>
+                            {RandomHint()}
+                        </Box>
+                        <Stack direction={"row"} alignItems={"end"}>
+                            <Typography variant={'body2'}>
+                                The time you hitting the ground is :
+                            </Typography>
+                            <Typography variant={'h4'} fontWeight={"bolder"}>
+                                {fallTime}
+                            </Typography>
+                            <Typography variant={'body2'}>
+                                s
+                            </Typography>
+                        </Stack>
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={onCloseDialog}>
+                    <Button variant={'contained'} onClick={onCloseDialog} size={"small"}>
                         Restart
                     </Button>
                 </DialogActions>
