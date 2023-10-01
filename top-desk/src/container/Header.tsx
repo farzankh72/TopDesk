@@ -11,7 +11,8 @@ const Header = () => {
         }
     }, [])
     return (
-        <Container maxWidth={"md"} sx={{backgroundColor: 'blue', pt: '16px', pb: '16px', borderRadius: '6px'}}>
+        <Container maxWidth={"xl"}
+                   sx={{backgroundColor: '#0073e6', pt: '16px', pb: '16px', borderRadius: '6px', color: '#F5F5F5'}}>
             <Stack direction={"row"} justifyContent={"space-between"}>
                 <Box>
                     <Typography variant={'h3'} fontWeight={'bolder'}>

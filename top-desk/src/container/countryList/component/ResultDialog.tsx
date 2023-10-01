@@ -18,13 +18,15 @@ interface DialogProps {
 
 const ResultDialog = ({hintDialog, fallTime, onCloseDialog}: DialogProps) => {
     useEffect(() => {
-        const localData = localStorage.getItem('score');
-        if (localData) {
-            if (+localData < fallTime) {
+        if (fallTime) {
+            const localData = localStorage.getItem('score');
+            if (localData) {
+                if (+localData < fallTime) {
+                    localStorage.setItem('score', fallTime.toString())
+                }
+            } else {
                 localStorage.setItem('score', fallTime.toString())
             }
-        } else {
-            localStorage.setItem('score', fallTime.toString())
         }
     }, [fallTime])
 
