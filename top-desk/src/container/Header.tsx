@@ -1,14 +1,32 @@
-import {Container, Typography} from "@mui/material";
+import {Box, Container, Typography} from "@mui/material";
+import {useEffect, useState} from "react";
+import Stack from "@mui/material/Stack";
 
 const Header = () => {
+    const [score, setScore] = useState<string>()
+    useEffect(() => {
+        const hasScore = localStorage.getItem('score')
+        if (hasScore) {
+            setScore(hasScore)
+        }
+    }, [])
     return (
         <Container maxWidth={"md"} sx={{backgroundColor: 'blue', pt: '16px', pb: '16px', borderRadius: '6px'}}>
-            <Typography variant={'h3'} fontWeight={'bolder'}>
-                Be like a yo-yo,
-            </Typography>
-            <Typography variant={"h6"} fontWeight={"bold"}>
-                Aim to reach your lowest point fashionably late!
-            </Typography>
+            <Stack direction={"row"} justifyContent={"space-between"}>
+                <Box>
+                    <Typography variant={'h3'} fontWeight={'bolder'}>
+                        Be like a yo-yo,
+                    </Typography>
+                    <Typography variant={"body1"} fontWeight={"bold"}>
+                        Aim to reach your lowest point fashionably late!
+                    </Typography>
+                </Box>
+                <Box alignSelf={"end"} display={score ? 'inherit' : "none"}>
+                    <Typography variant={"body2"}>
+                        Your greatest time that you can fly is : {score} second
+                    </Typography>
+                </Box>
+            </Stack>
         </Container>
     )
 }

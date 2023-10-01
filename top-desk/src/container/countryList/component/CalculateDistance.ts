@@ -24,7 +24,7 @@ const CalculateDistance = (userSelected: Array<WeatherModel>) => {
         counter += time
     })
 
-    return Math.floor(counter)
+    return Math.floor(counter / 4)
 }
 
 export default CalculateDistance

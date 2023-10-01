@@ -1,22 +1,17 @@
 import {useEffect, useMemo, useState} from "react";
 
-import RandomHint from "@/container/RandomHint";
+import ResultDialog from "@/container/countryList/component/ResultDialog";
 import CalculateDistance from "@/container/countryList/component/CalculateDistance";
 
 import useGetCurrentWeather from "@/pages/api/hooks/useGetCurrentWeather";
 
 import Card from "@mui/material/Card";
-import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
 import Snackbar from "@mui/material/Snackbar";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
 
 interface countryItemProps {
     fetchCountry: () => void
@@ -27,9 +22,9 @@ let userSelected: Array<WeatherModel> = []
 
 const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps }) => {
 
+    const [fallTime, setFallTime] = useState<number>(0)
     const [hintDialog, setHintDialog] = useState<boolean>(false)
     const [noneDistanceSnack, setNoneDistanceSnack] = useState<boolean>(false)
-    const [fallTime, setFallTime] = useState<number>(0)
 
     const {data, loading, error, fetching} = useGetCurrentWeather({enable: false})
 
@@ -50,49 +45,26 @@ const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps })
         fetching({weatherProps: {lat: latlng[0], lon: latlng[1]}}).then()
     }
 
-    const handleClose = () => {
+    const handleCloseSnackbar = () => {
         setNoneDistanceSnack(false);
     };
+
+    const handleCloseDialog = () => {
+        userSelected = []
+        setHintDialog(false)
+        countryItemProps.fetchCountry()
+    }
 
     const SnackbarDisplay = useMemo(() => {
         return (
             <Snackbar
-                onClose={handleClose}
+                onClose={handleCloseSnackbar}
                 autoHideDuration={2000}
                 open={noneDistanceSnack}
                 message="This Country Has no data about Distance of Sea!"
             />
         )
     }, [noneDistanceSnack])
-
-    const DialogHintDisplay = useMemo(() => {
-        return (
-            <Dialog open={hintDialog} maxWidth={'xs'}>
-                <DialogTitle>
-                    <Typography>
-                        Hint
-                    </Typography>
-                </DialogTitle>
-                <DialogContent>
-                    <Stack spacing={2}>
-                        {RandomHint()}
-                        <Typography variant={'subtitle2'}>
-                            The time you hitting the ground is : {fallTime}
-                        </Typography>
-                    </Stack>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => {
-                        userSelected = []
-                        setHintDialog(false)
-                        countryItemProps.fetchCountry()
-                    }}>
-                        Restart
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        )
-    }, [hintDialog])
 
     return (
         <Card sx={{width: '210px', height: '240px'}}>
@@ -111,8 +83,12 @@ const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps })
                     {loading ? '...loading' : error ? 'error...' : 'Click'}
                 </Button>
             </CardActions>
+            <ResultDialog
+                fallTime={fallTime}
+                hintDialog={hintDialog}
+                onCloseDialog={handleCloseDialog}
+            />
             {SnackbarDisplay}
-            {DialogHintDisplay}
         </Card>
     )
 }
