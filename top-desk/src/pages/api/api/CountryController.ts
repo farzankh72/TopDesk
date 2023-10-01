@@ -1,11 +1,9 @@
 import axios from "axios";
 
+const URL_GET_COUNTRY: string = 'https://restcountries.com/v3.1/all'
+
 const CountryController = async () => {
-    const URL_GET_COUNTRY: string = 'https://restcountries.com/v3.1/all'
-
-    const fetchData = await axios.get(URL_GET_COUNTRY).then((resp) => resp.data as Array<CountryModel>).catch(error => error)
-
-    return fetchData
+    return await axios.get(URL_GET_COUNTRY)
 }
 
 export default CountryController

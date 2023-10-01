@@ -1,7 +1,9 @@
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 
 import RandomHint from "@/container/RandomHint";
-import WeatherController from "@/pages/api/api/WeatherController";
+import CalculateDistance from "@/container/countryList/component/CalculateDistance";
+
+import useGetCurrentWeather from "@/pages/api/hooks/UseGetCurrentWeather";
 
 import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
@@ -12,58 +14,39 @@ import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import {DialogActions, Stack} from "@mui/material";
 
 interface countryItemProps {
+    fetchCountry: () => void
     countryItem: CountryModel
 }
+
+let userSelected: Array<WeatherModel> = []
 
 const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps }) => {
 
     const [hintDialog, setHintDialog] = useState<boolean>(false)
     const [noneDistanceSnack, setNoneDistanceSnack] = useState<boolean>(false)
+    const [fallTime, setFallTime] = useState<number>(0)
 
-    const userSelected: Array<WeatherModel> = []
-    const fallTime = new Set<number>()
+    const {data, loading, error, fetching} = useGetCurrentWeather({WeatherProps: {enable: false}})
+
+    useEffect(() => {
+        if (userSelected?.length < 4) {
+            if (data?.main && data.main.sea_level != undefined) {
+                userSelected.push(data)
+            } else if (data) {
+                setNoneDistanceSnack(true)
+            }
+        } else {
+            setFallTime(CalculateDistance(userSelected))
+            setHintDialog(true)
+        }
+    }, [data])
 
     function onClickAddToCountry(latlng: Array<number>) {
-        const weatherService = WeatherController(latlng)
-
-        if (userSelected?.length < 4) {
-            weatherService.then(data => {
-                if (data.main.sea_level != undefined) {
-                    userSelected.push(data)
-                } else {
-                    console.log('sorry, select another')
-                    setNoneDistanceSnack(true)
-                }
-            })
-        } else {
-            userSelected.map((weather) => {
-                const pi: number = 9.8
-                const distanceFromSea: number = weather.main.sea_level
-                const windSpeed: number = weather.wind.speed
-                let rainFall: boolean = false
-                if (weather.weather) {
-                    weather.weather.map(item => {
-                        if (item.description.includes('raid')) {
-                            rainFall = true
-                        }
-                    })
-                }
-
-                const evaluate = 2 * (Math.sqrt((2 * distanceFromSea) / (pi + windSpeed - (rainFall ? 0.5 : 0))))
-                fallTime.add(evaluate)
-            })
-
-            let counter: number = 0
-            fallTime.forEach(time => {
-                counter += time
-            })
-
-            setHintDialog(true)
-            console.log('avg of falling speed', counter / 4)
-
-        }
+        fetching({weatherProps: {lat: latlng[0], lon: latlng[1]}}).then()
     }
 
     const handleClose = (event, reason) => {
@@ -87,15 +70,29 @@ const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps })
 
     const DialogHintDisplay = useMemo(() => {
         return (
-            <Dialog open={hintDialog} onBackdropClick={() => setHintDialog(false)} maxWidth={'xs'}>
+            <Dialog open={hintDialog} maxWidth={'xs'}>
                 <DialogTitle>
                     <Typography>
                         Hint
                     </Typography>
                 </DialogTitle>
-                {
-                    RandomHint()
-                }
+                <DialogContent>
+                    <Stack spacing={2}>
+                        {RandomHint()}
+                        <Typography variant={'subtitle2'}>
+                            The time you hitting the ground is : {fallTime}
+                        </Typography>
+                    </Stack>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => {
+                        userSelected = []
+                        setHintDialog(false)
+                        countryItemProps.fetchCountry()
+                    }}>
+                        Restart
+                    </Button>
+                </DialogActions>
             </Dialog>
         )
     }, [hintDialog])
@@ -103,7 +100,6 @@ const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps })
     return (
         <Card sx={{width: '210px', height: '240px'}}>
             <CardMedia sx={{height: '90px'}} component='img' image={countryItemProps.countryItem.flags.png}/>
-
             <CardContent sx={{height: '65px'}}>
                 <Typography variant='subtitle2' fontWeight='bolder'>
                     Country: {countryItemProps.countryItem.name.common}
@@ -113,9 +109,9 @@ const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps })
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size='small' variant={'contained'}
+                <Button disabled={loading || error} size='small' variant={'contained'}
                         onClick={() => onClickAddToCountry(countryItemProps.countryItem.latlng)}>
-                    yes
+                    {loading ? '...loading' : error ? 'error...' : 'Click'}
                 </Button>
             </CardActions>
             {SnackbarDisplay}

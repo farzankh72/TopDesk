@@ -10,7 +10,7 @@ const RandomHint = () => {
     const randomIndex = Math.floor(Math.random() * hintData.length)
 
     return (
-        <Typography variant={'body2'} fontWeight={"bolder"} p={4}>
+        <Typography variant={'body2'} fontWeight={"bolder"} p={2}>
             {hintData[randomIndex]}
         </Typography>
     )
