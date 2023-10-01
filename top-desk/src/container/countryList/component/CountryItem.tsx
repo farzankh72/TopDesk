@@ -1,19 +1,16 @@
-import {useContext, useEffect, useMemo, useState} from "react";
+import { useEffect, useState} from "react";
 
 import ResultDialog from "@/container/countryList/component/ResultDialog";
 import CalculateDistance from "@/container/countryList/component/CalculateDistance";
 
+import {useGeoContext} from "@/pages";
 import useGetCurrentWeather from "@/pages/api/hooks/useGetCurrentWeather";
 
 import Card from "@mui/material/Card";
-import Button from "@mui/material/Button";
-import Snackbar from "@mui/material/Snackbar";
+import {ButtonBase} from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import {useGeoContext} from "@/pages";
-import {ButtonBase} from "@mui/material";
 
 interface countryItemProps {
     fetchCountry: () => void
@@ -23,7 +20,8 @@ interface countryItemProps {
 let userSelected: Array<WeatherModel> = []
 
 const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps }) => {
-    const {addToSelectedGeo, clearData, scoreHandler} = useGeoContext()
+    const {addToSelectedGeo, clearData, scoreHandler, difficulty} = useGeoContext()
+
     const [fallTime, setFallTime] = useState<number>(0)
     const [resultDialogDisplay, setResultDialogDisplay] = useState<boolean>(false)
     const [noneDistanceSnack, setNoneDistanceSnack] = useState<boolean>(false)
@@ -42,7 +40,7 @@ const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps })
             setNoneDistanceSnack(true)
         }
 
-        if (userSelected.length === 3) {
+        if (userSelected.length === difficulty) {
             const tempFallTime = CalculateDistance(userSelected);
             if (scoreHandler) {
                 scoreHandler(tempFallTime)

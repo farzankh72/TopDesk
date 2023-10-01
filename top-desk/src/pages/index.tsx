@@ -1,25 +1,35 @@
+import {createContext, useContext, useState} from "react";
+
 import Header from "@/container/Header";
 import CountryList from "@/container/countryList/CountryList";
 
 import {Stack} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import SideBar from "@/container/SideBar";
-import {createContext, useContext, useState} from "react";
 
 interface ContextProps {
     score?: number
+    difficulty?: number
     clearData?: (enable: boolean) => void
     scoreHandler?: (item: number) => void
     selectedGeoCountry?: Array<WeatherModel>
+    difficultyHandler?: (item: number) => void
     addToSelectedGeo?: (items: WeatherModel) => void
 }
 
 const ContextGeo = createContext<ContextProps>({})
 
+
 function Home() {
+    const [difficulty, setDifficulty] = useState<number>(3);
+
     const [selectedGeoCountry, setSelectedGeoCountry] = useState<Array<WeatherModel>>([]);
 
     const [score, setScore] = useState<number>(0)
+
+    const difficultyHandler = (item: number) => {
+        setDifficulty(item)
+    }
 
     const scoreHandler = (item: number) => {
         setScore(item)
@@ -36,7 +46,15 @@ function Home() {
     }
 
     return (
-        <ContextGeo.Provider value={{selectedGeoCountry, addToSelectedGeo, clearData, score, scoreHandler}}>
+        <ContextGeo.Provider value={{
+            score,
+            clearData,
+            difficulty,
+            scoreHandler,
+            addToSelectedGeo,
+            difficultyHandler,
+            selectedGeoCountry,
+        }}>
             <Stack direction={"column"} spacing={2} alignItems={"center"} width='100%'>
                 <Header/>
                 <Grid container rowSpacing={2}>

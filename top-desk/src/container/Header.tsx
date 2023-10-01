@@ -1,7 +1,9 @@
-import {Box, Container, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
-import Stack from "@mui/material/Stack";
+
 import {useGeoContext} from "@/pages";
+
+import Stack from "@mui/material/Stack";
+import {Box, Container, Typography} from "@mui/material";
 
 const Header = () => {
     const {score, selectedGeoCountry} = useGeoContext()
