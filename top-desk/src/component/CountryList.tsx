@@ -7,7 +7,7 @@ import {Button, Card, CardActions, CardContent, CardMedia, Container, Grid, Typo
 
 const CountryList = () => {
     const userSelected: Array<WeatherModel> = []
-    const fallTime = new Set()
+    const fallTime = new Set<number>()
 
     const [countries, setCountries] = useState<Array<CountryModel>>()
 
@@ -15,7 +15,6 @@ const CountryList = () => {
 
     useEffect(() => {
         const a = CountryController()
-
 
         a.then((item) => {
             const randomItems: Array<CountryModel> = []
@@ -72,6 +71,10 @@ const CountryList = () => {
 
         }
     }
+
+    useEffect(() => {
+        console.log('yes')
+    }, [doneChoosing])
 
     if (countries?.length) {
         return (
