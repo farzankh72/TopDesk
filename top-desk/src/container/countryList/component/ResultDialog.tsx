@@ -48,9 +48,7 @@ const ResultDialog = ({resultDialogDisplay, fallTime, onCloseDialog}: DialogProp
         return (
             <Dialog open={resultDialogDisplay} maxWidth={'xs'}>
                 <DialogTitle>
-                    <Typography variant={'h6'} fontWeight={"bolder"}>
-                        Result
-                    </Typography>
+                    Result
                 </DialogTitle>
                 <DialogContent>
                     <Stack spacing={2}>
@@ -73,9 +71,10 @@ const ResultDialog = ({resultDialogDisplay, fallTime, onCloseDialog}: DialogProp
                             {RandomHint()}
                         </Box>
                         <Box bgcolor={'#0073e6'} borderRadius='6px' p={2} display={hasReward ? 'inherit' : 'none'}>
-                            <Stack direction={"row"}>
+                            <Stack>
+                                <Typography variant={'h6'} fontWeight={'bolder'} color={'#F5F5F5'}>Reward is Joke
+                                    :</Typography>
                                 <Typography variant={'body2'} fontWeight={"bolder"} color={'#F5F5F5'}>
-                                    <Typography variant={'h6'} fontWeight={'bolder'}>Reward is Joke :</Typography>
                                     {loading ? 'Loading...' : error ? 'error...' : data?.value}
                                 </Typography>
                             </Stack>

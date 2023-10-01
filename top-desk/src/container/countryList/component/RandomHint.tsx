@@ -1,4 +1,5 @@
 import {Typography} from "@mui/material";
+import Stack from "@mui/material/Stack";
 
 const hintData: Array<string> = [
     'Pick a single country, all your choices land in one, easy-peasy global fun!',
@@ -10,12 +11,12 @@ const RandomHint = () => {
     const randomIndex = Math.floor(Math.random() * hintData.length)
 
     return (
-        <>
+        <Stack>
+            <Typography variant={'h6'} fontWeight={'bolder'} color={"lightgray"} p={1}>Hint is :</Typography>
             <Typography variant={'body2'} fontWeight={"bolder"} p={2} color={'lightgray'}>
-                <Typography variant={'h6'} fontWeight={'bolder'}>Hint is :</Typography>
                 {hintData[randomIndex]}
             </Typography>
-        </>
+        </Stack>
     )
 }
 

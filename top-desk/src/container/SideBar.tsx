@@ -1,10 +1,10 @@
 import {useGeoContext} from "@/pages";
 
+import {Box} from "@mui/material";
 import List from "@mui/material/List";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import ListItem from "@mui/material/ListItem";
-import {Box, ButtonGroup} from "@mui/material";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import ListItemText from "@mui/material/ListItemText";
@@ -12,7 +12,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemButton from "@mui/material/ListItemButton";
 
 const SideBar = () => {
-    const {selectedGeoCountry, difficultyHandler} = useGeoContext()
+    const {selectedGeoCountry, difficultyHandler, difficulty} = useGeoContext()
 
 
     return (
@@ -22,10 +22,12 @@ const SideBar = () => {
                     <Stack direction={"row"} justifyContent={"space-between"} pt={2}>
                         <Stack>
                             <Typography variant={'h6'} fontWeight={'bolder'}>Difficulty</Typography>
-                            <ButtonGroup size={"small"} variant={'contained'} color={'primary'}>
-                                <Button onClick={() => difficultyHandler && difficultyHandler(5)}>Hard</Button>
-                                <Button onClick={() => difficultyHandler && difficultyHandler(3)}>Normal</Button>
-                            </ButtonGroup>
+                            <Stack direction={"row"} spacing={1}>
+                                <Button disabled={difficulty === 5} variant={'contained'}
+                                        onClick={() => difficultyHandler && difficultyHandler(5)}>Hard</Button>
+                                <Button disabled={difficulty === 3} variant={'contained'}
+                                        onClick={() => difficultyHandler && difficultyHandler(3)}>Normal</Button>
+                            </Stack>
                         </Stack>
                     </Stack>
                     <Typography variant={'h6'} fontWeight={'bolder'}>Chosen Item</Typography>
