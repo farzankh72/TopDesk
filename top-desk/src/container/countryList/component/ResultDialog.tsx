@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 
-import RandomHint from "@/container/RandomHint";
+import RandomHint from "@/container/countryList/component/RandomHint";
 
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";

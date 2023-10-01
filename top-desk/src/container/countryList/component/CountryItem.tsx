@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from "react";
+import {useContext, useEffect, useMemo, useState} from "react";
 
 import ResultDialog from "@/container/countryList/component/ResultDialog";
 import CalculateDistance from "@/container/countryList/component/CalculateDistance";
@@ -12,6 +12,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
+import {useGeoContext} from "@/pages";
 
 interface countryItemProps {
     fetchCountry: () => void
@@ -21,7 +22,7 @@ interface countryItemProps {
 let userSelected: Array<WeatherModel> = []
 
 const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps }) => {
-
+    const {addToSelectedGeo , clearData} = useGeoContext()
     const [fallTime, setFallTime] = useState<number>(0)
     const [hintDialog, setHintDialog] = useState<boolean>(false)
     const [noneDistanceSnack, setNoneDistanceSnack] = useState<boolean>(false)
@@ -31,15 +32,18 @@ const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps })
     const {data, loading, error, fetching} = useGetCurrentWeather({enable: false})
 
     useEffect(() => {
+        if (data?.main && data.main.sea_level != undefined) {
+            if (addToSelectedGeo) {
+                addToSelectedGeo(data)
+            }
+            userSelected.push(data)
+        } else if (data) {
+            setNoneDistanceSnack(true)
+        }
+
         if (userSelected.length === 3) {
             setFallTime(CalculateDistance(userSelected))
             setHintDialog(true)
-        } else {
-            if (data?.main && data.main.sea_level != undefined) {
-                userSelected.push(data)
-            } else if (data) {
-                setNoneDistanceSnack(true)
-            }
         }
     }, [data])
 
@@ -52,6 +56,7 @@ const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps })
         userSelected = []
         setHintDialog(false)
         countryItemProps.fetchCountry()
+        clearData(true)
     }
 
     return (
