@@ -58,11 +58,11 @@ function Home() {
             <Stack direction={"column"} spacing={2} alignItems={"center"} width='100%'>
                 <Header/>
                 <Grid container rowSpacing={2}>
-                    <Grid item xs={9}>
-                        <CountryList/>
-                    </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={12} sm={12} md={12} lg={3} xl={3}>
                         <SideBar/>
+                    </Grid>
+                    <Grid item xs={12} xl={12} md={12} lg={9} xl={9}>
+                        <CountryList/>
                     </Grid>
                 </Grid>
             </Stack>

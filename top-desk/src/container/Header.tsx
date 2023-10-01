@@ -21,7 +21,7 @@ const Header = () => {
                    sx={{backgroundColor: '#0073e6', pt: '16px', pb: '16px', borderRadius: '6px', color: '#F5F5F5'}}>
             <Stack direction={"row"} justifyContent={"space-between"}>
                 <Box>
-                    <Typography variant={'h3'} fontWeight={'bolder'}>
+                    <Typography variant={'h4'} fontWeight={'bolder'}>
                         Be like a yo-yo,
                     </Typography>
                     <Typography variant={"body1"} fontWeight={"bold"}>
@@ -30,7 +30,7 @@ const Header = () => {
                 </Box>
                 <Box alignSelf={"end"} display={scoreData ? 'inherit' : "none"}>
                     <Typography variant={"body2"}>
-                        Your greatest time that you can fly is : {scoreData} second
+                        Higher Score: {scoreData} s
                     </Typography>
                 </Box>
             </Stack>

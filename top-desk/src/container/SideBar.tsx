@@ -16,8 +16,8 @@ const SideBar = () => {
 
 
     return (
-        <Container maxWidth={'xl'}>
-            <Container sx={{backgroundColor: '#F5F5F5', borderRadius: '6px'}}>
+        <Container>
+            <Container sx={{backgroundColor: '#F5F5F5', borderRadius: '6px' , pb:2}}>
                 <Stack spacing={2}>
                     <Stack direction={"row"} justifyContent={"space-between"} pt={2}>
                         <Stack>
