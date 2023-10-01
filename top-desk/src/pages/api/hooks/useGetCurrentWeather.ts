@@ -1,4 +1,4 @@
-import {FC, useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import WeatherController from "@/pages/api/api/WeatherController";
 
 interface WeatherProps {
@@ -7,7 +7,7 @@ interface WeatherProps {
     enable?: boolean | true
 }
 
-const UseGetCurrentWeather = ({lon, lat, enable}: { WeatherProps: WeatherProps }) => {
+const UseGetCurrentWeather = ({lon, lat, enable}: WeatherProps) => {
     const [data, setData] = useState<WeatherModel>()
     const [error, setError] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false)
@@ -24,8 +24,8 @@ const UseGetCurrentWeather = ({lon, lat, enable}: { WeatherProps: WeatherProps }
                 }
             })
             setData(weatherService.data as WeatherModel)
-        } catch (e) {
-            setError(e)
+        } catch {
+            setError(true)
         } finally {
             setLoading(false)
         }

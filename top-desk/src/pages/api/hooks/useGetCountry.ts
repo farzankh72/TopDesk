@@ -22,8 +22,8 @@ const UseGetCountry = () => {
                     }
                 }
                 setData(randomItems)
-            } catch (e) {
-                setError(e)
+            } catch {
+                setError(true)
             } finally {
                 setLoading(false)
             }

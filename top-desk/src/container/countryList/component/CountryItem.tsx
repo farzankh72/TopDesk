@@ -3,9 +3,10 @@ import {useEffect, useMemo, useState} from "react";
 import RandomHint from "@/container/RandomHint";
 import CalculateDistance from "@/container/countryList/component/CalculateDistance";
 
-import useGetCurrentWeather from "@/pages/api/hooks/UseGetCurrentWeather";
+import useGetCurrentWeather from "@/pages/api/hooks/useGetCurrentWeather";
 
 import Card from "@mui/material/Card";
+import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import Snackbar from "@mui/material/Snackbar";
@@ -15,7 +16,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import {DialogActions, Stack} from "@mui/material";
+import DialogActions from "@mui/material/DialogActions";
 
 interface countryItemProps {
     fetchCountry: () => void
@@ -30,7 +31,7 @@ const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps })
     const [noneDistanceSnack, setNoneDistanceSnack] = useState<boolean>(false)
     const [fallTime, setFallTime] = useState<number>(0)
 
-    const {data, loading, error, fetching} = useGetCurrentWeather({WeatherProps: {enable: false}})
+    const {data, loading, error, fetching} = useGetCurrentWeather({enable: false})
 
     useEffect(() => {
         if (userSelected?.length < 4) {
@@ -49,11 +50,7 @@ const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps })
         fetching({weatherProps: {lat: latlng[0], lon: latlng[1]}}).then()
     }
 
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
+    const handleClose = () => {
         setNoneDistanceSnack(false);
     };
 
