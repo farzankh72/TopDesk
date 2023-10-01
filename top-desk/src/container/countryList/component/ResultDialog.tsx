@@ -1,16 +1,17 @@
 import {useEffect, useState} from "react";
 
+import useGetRandomJoke from "@/pages/api/hooks/useGetRandomJoke";
+
 import RandomHint from "@/container/countryList/component/RandomHint";
 
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
+import {Box, Tooltip} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-import {Box} from "@mui/material";
-import useGetRandomJoke from "@/pages/api/hooks/useGetRandomJoke";
 
 interface DialogProps {
     fallTime: number
@@ -58,18 +59,20 @@ const ResultDialog = ({resultDialogDisplay, fallTime, onCloseDialog}: DialogProp
                                 <Typography variant={'h1'} fontWeight={"bolder"}>
                                     {fallTime}
                                 </Typography>
-                                <Typography variant={'h4'}>
+                                <Typography variant={'h4'} alignSelf={'center'}>
                                     s
                                 </Typography>
                             </Stack>
-                            <Typography variant={'body2'}>
-                                The time you hitting the ground is
-                            </Typography>
+                            <Tooltip title={'(2 * Sea Level ) / (9.8 + Wind Speed - Rainfall Impact )'}>
+                                <Typography variant={'body2'}>
+                                    Until hit the ground
+                                </Typography>
+                            </Tooltip>
                         </Stack>
                         <Box bgcolor={'#073563'} borderRadius='6px'>
                             {RandomHint()}
                         </Box>
-                        <Box bgcolor={'#0073e6'} borderRadius='6px' display={hasReward ? 'inherit' : 'none'}>
+                        <Box bgcolor={'#0073e6'} borderRadius='6px' p={2} display={hasReward ? 'inherit' : 'none'}>
                             <Stack direction={"row"}>
                                 <Typography variant={'body2'} fontWeight={"bolder"} color={'#F5F5F5'}>
                                     <Typography variant={'h6'} fontWeight={'bolder'}>Reward is Joke :</Typography>

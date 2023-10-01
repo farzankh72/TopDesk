@@ -7,15 +7,23 @@ import SideBar from "@/container/SideBar";
 import {createContext, useContext, useState} from "react";
 
 interface ContextProps {
+    score?: number
+    clearData?: (enable: boolean) => void
+    scoreHandler?: (item: number) => void
     selectedGeoCountry?: Array<WeatherModel>
     addToSelectedGeo?: (items: WeatherModel) => void
-    clearData?: (enable: boolean) => void
 }
 
 const ContextGeo = createContext<ContextProps>({})
 
 function Home() {
     const [selectedGeoCountry, setSelectedGeoCountry] = useState<Array<WeatherModel>>([]);
+
+    const [score, setScore] = useState<number>(0)
+
+    const scoreHandler = (item: number) => {
+        setScore(item)
+    }
 
     const addToSelectedGeo = (item: WeatherModel) => {
         setSelectedGeoCountry(prevSelectedGeoCountry => [...prevSelectedGeoCountry, item]);
@@ -28,7 +36,7 @@ function Home() {
     }
 
     return (
-        <ContextGeo.Provider value={{selectedGeoCountry, addToSelectedGeo, clearData}}>
+        <ContextGeo.Provider value={{selectedGeoCountry, addToSelectedGeo, clearData, score, scoreHandler}}>
             <Stack direction={"column"} spacing={2} alignItems={"center"} width='100%'>
                 <Header/>
                 <Grid container rowSpacing={2}>

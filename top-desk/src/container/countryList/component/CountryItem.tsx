@@ -23,7 +23,7 @@ interface countryItemProps {
 let userSelected: Array<WeatherModel> = []
 
 const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps }) => {
-    const {addToSelectedGeo, clearData} = useGeoContext()
+    const {addToSelectedGeo, clearData, scoreHandler} = useGeoContext()
     const [fallTime, setFallTime] = useState<number>(0)
     const [resultDialogDisplay, setResultDialogDisplay] = useState<boolean>(false)
     const [noneDistanceSnack, setNoneDistanceSnack] = useState<boolean>(false)
@@ -43,7 +43,11 @@ const CountryItem = ({countryItemProps}: { countryItemProps: countryItemProps })
         }
 
         if (userSelected.length === 3) {
-            setFallTime(CalculateDistance(userSelected))
+            const tempFallTime = CalculateDistance(userSelected);
+            if (scoreHandler) {
+                scoreHandler(tempFallTime)
+            }
+            setFallTime(tempFallTime)
             setResultDialogDisplay(true)
         }
     }, [data])
